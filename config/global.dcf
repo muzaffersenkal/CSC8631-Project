@@ -5,9 +5,9 @@ data_ignore:
 cache_loading: TRUE
 recursive_loading: FALSE
 munging: TRUE
-logging: FALSE
+logging: TRUE
 logging_level: INFO
-load_libraries: FALSE
+load_libraries: TRUE
 libraries: reshape2, plyr, tidyverse, stringr, lubridate
 as_factors: FALSE
 tables_type: tibble
@@ -16,3 +16,4 @@ cache_loaded_data:  TRUE
 sticky_variables: NONE
 underscore_variables: TRUE
 cache_file_format: RData
+tidy_data: FALSE

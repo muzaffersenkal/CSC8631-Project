@@ -11,3 +11,8 @@
 # knitr and R markdown default cache directories
 *_cache/
 /cache/
+
+# logs
+logs/project.log
+
+.DS_Store
