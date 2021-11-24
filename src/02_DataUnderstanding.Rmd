@@ -1,0 +1,162 @@
+---
+title: "02_DataUnderstanding"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_knit$set(root.dir= normalizePath('..'))
+```
+
+```{r, echo=FALSE,warning=FALSE,message=FALSE,error=FALSE, results='hide'}
+library(ProjectTemplate)
+load.project()
+
+```
+
+
+# Data Understanding
+
+We will gather, describe and explore the data to make sure it fits the business goal.
+There are 6 different course periods(runs) and the data is stored in different files and there are 53 in total. It can cause confusion and inefficiency during analysis. We must store and use them in a structured way in our analysis. For this, we transformed our files in a structured way using **regex**. The function is implemented in **libs/globals.R** file.
+
+Every run includes 8 data sets as the followings:
+
+- **enrolments:** includes user data
+- **video.stats:** contains video statistics information
+- **team.members:**  team member list such as educator, host
+- **step.activity: ** all users first visit and end time information for each step
+- **leaving.survey.responses:** includes survey answers after leaving the course
+- **weekly.sentiment.survey.responses:** includes weekly survey responses.
+- **question.response:** contains the answers given by the users in the quizzes
+- **archetype.survey.responses:**  contains the answers given by the users in archetype survey
+
+
+However, run 1 and 2 does not include video.stats and also run 1 does not include team.members data.
+
+
+## Gathering and Describing Data
+
+To achieve our business goal , we will use step.activity and enrolments datasets.
+
+### Step Activity Summary
+
+```{r}
+summary(run_3.step.activity)
+```
+The description of each column/variable can be seen below:
+
+- **learner_id:** learner unique id
+- **step:** step id
+- **week_number:** week number
+- **step_number:** step low id
+- **first_visited_at:** first visited time with timezone
+- **last_completed_at:** completed time with timezone
+
+
+```{r}
+summary(run_3.step.activity)
+```
+
+### Enrolment Summary
+- **learner_id:** learner unique id
+- **enrolled_at:** enrolment datetime
+- **unenrolled_at:** unerolment datetime
+- **role:** role
+- **fully_participated_at:**
+- **purchased_statement_at:** 
+- **gender:**
+- **country:**
+- **detected_country:**
+- **age_range:**
+- **highest_education_level:**
+- **employment_status:**
+- **employment_area:**
+
+## Data Quality
+
+Before start the analysis part, we should check data quality. First of all, step column in step.activity is numeric. We should convert it to string column. Column transform operations were performed in the `munge/01-Transform-Datatype.R` file.
+
+Since the step column is numeric, the values 2.2 to 2.20 appear as 2.2. We should fix this first, then convert categorical column. This operation was implemented in `munge/02.Fix-StepID-StepActivity.R`
+
+
+In enrollment data set, there are many missing values in age_range, country, employment_area. There are 2 columns for country information. One is the country name given by the user, and the other is the country name determined by the system.
+
+
+Before proceeding to the exploratory analysis, some feature engineering steps were applied to provide a more comfortable visualization on the data.
+
+New columns are added as following:
+
+  - **completed** (step_activity) : it is a boolean column that represents whether completed or not
+  - **is_unenroll** (enrolments) : it is a boolean column that represents whether undo the enrollment or not
+
+
+This operations implemented in `munge/03-FeatureEngineering.R`
+
+And also, to analyze for all step activity, all files should be merged. So we need to add a new column called **run_id** to all our data and merge the data.
+This operation  was implemented in `munge/04-MergeDataFrames.R`
+
+
+##  Data Exploratory Anaylsis
+
+
+```{r}
+ggplot(data= run_1.step.activity, aes(x=step, color=step)) +
+  geom_bar(stat = "count")+
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) +
+  ggtitle("total number of records per step")
+
+ggsave(file.path('graphs', 'run_1_step_activity_count.png'))
+```
+
+```{r}
+### Step Activity Completed Count by step
+ggplot(run_1.step.activity, aes(x = step, fill=completed)) +
+  geom_bar(position = 'dodge')+
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))+
+  ggtitle("Run 1 - Number of Step Completed")
+
+ggsave(file.path('graphs', 'run_1_step_activity.png'))
+```
+
+
+
+```{r}
+### Step Activity Completed Count by step
+ggplot(run_3.step.activity, aes(x = step, fill=completed)) +
+  geom_bar(position = 'dodge')+
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))+
+  ggtitle("Run 3 - Number of Step Completed")
+
+ggsave(file.path('graphs', 'run_3_step_activity.png'))
+```
+
+
+Firstly, it should be noted in the graph that the step steps are not sequential.
+The most striking part of the graph is that  approximately 750 students did not complete **step 1.1**. The number of completing the step starts with 1500. After 10 steps, this number varies between 500 and 750 for the rest of the course. In addition, the number of participation in **step 3.18** is quite low.
+
+
+
+
+```{r}
+ggplot(step_activity, aes(x = step, fill=completed)) +
+  geom_bar(position = 'dodge')+
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))+
+  facet_wrap(~run_id)+
+  ggtitle("All run - Number of Step Completed")
+ggsave(file.path('graphs', 'all_step_activity.png'))
+```
+
+When we look at the graphics for each run, we see that there is a similar pattern. However, In the last steps of Run 1, it seems that the rate of non-completion is higher than the others and the overall number of enrollment is also quite high.
+
+
+When looked carefully, there are 2 spaces in Run 3. Whereas, a gap  was occured in our first chart only at **step 3.18**. And also these gaps were formed in the runes other than Run 1. It raises suspicion that there may be any missing step. Let's check it.
+
+
+```{r}
+step_activity %>%
+  group_by(run_id) %>%
+  summarise(n_distinct(step))
+```
+
+As we thought, there are missing and extra steps. Because of these different steps, we can misinterpret our data.
