@@ -1,0 +1,61 @@
+---
+title: "04_DataUnderstanding"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_knit$set(root.dir= normalizePath('..'))
+```
+
+# Data Understanding
+
+As we know, **CRISP-DM** is not a linear process. To make sure it fits the business and data mining goal, we can go back to data understanding.
+
+There are html files attached with details about the course in data files. These html files contain the names and step types of all the steps. We can use them to find missing and extra steps. And also, we need step types(article, video, etc) in our analysis.
+
+
+##  Data Exploratory Anaylsis
+
+
+```{r}
+# Run 3 - Number of Step by Step Type
+ggplot(df.filtered , aes(x = step, color=step_type)) +
+  geom_bar()+
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))+
+  ggtitle("Run 3 - Number of Step by Step Type") 
+ggsave(file.path('graphs', 'run3_step_activity_with_type.png'))
+```
+
+This bar chart represents the number of participation of each step with their step type. 
+
+
+## Boxplot of Elapsed time for each step
+
+
+```{r}
+ggplot(data= df.filtered , aes(x = elapsed_time, group=step, color=step)) +
+  geom_boxplot(position = 'dodge')+
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) +
+  ggtitle("Elapsed time for each step")
+ggsave(file.path('graphs', 'filtered_run_elapsed_time_boxplot.png'))
+
+```
+First of all, since there are too many steps, it is difficult to determine which step the points belong to. However, it is clear that there are many outliers in the data. It might be better to see them on the box plot.
+
+
+### Boxplot of elapsed time for each type
+
+```{r}
+ggplot(data= df.filtered , aes(x = elapsed_time, group=step_type, color=step_type)) +
+  geom_boxplot(position = 'dodge')+
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) +
+  ggtitle("Boxplot of elapsed time for each type")
+ggsave(file.path('graphs', 'filtered_run_elapsed_time_boxplot.png'))
+
+```
+
+Some users may have left the site open during some steps and left the computer. So we may be seeing these outliers. It seems difficult to interpret the graphs because there are outliers, so we should clean these outliers. The interquartile range is common method used to find outliers in data. Basically, we can implement this method to clean our outliers.
+
+On the other hand, in order to make a demographic interpretation, we need to combine our data with the enrolment data set.
+
