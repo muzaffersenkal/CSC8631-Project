@@ -1,0 +1,87 @@
+---
+title: "05_DataPreparation"
+output: pdf_document
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_knit$set(root.dir= normalizePath('..'))
+```
+
+
+#  Data Preparation
+
+## Filter Steps
+
+In the remaining analysis, analysis will be made on the articles. Therefore, it is necessary to filter the data and retrieve only the articles.
+
+```{r}
+df.article <- df.filtered  %>% filter(step_type == "ARTICLE")
+unique(df.article$step)
+```
+
+
+###  Outlier Detection
+
+When the data is analyzed, we see that the outliers are quite large. It seems that they spend more than 10 hours with steps, but such a thing is not possible. To avoid this issue, it should be defined a threshold for these values then filtered it.
+
+```{r}
+threshold <- 30 * 60 # 30 minute
+
+df.article <- df.article %>% filter(diff_second < threshold)
+```
+
+
+Only this way of filtering does not remove outliers from the data. An outlier detection method needs to be applied. IQR method will be used in this study. In ProjectTemplate structure, lib folder is good place to store external function. So, our outlier detection method which IQR was implemented in **lib/helpers.R** file. 
+
+Importantly, instead of calculating an outlier over the entire data directly, we will calculate an outlier for each step.
+
+```{r}
+outliers <- df.article  %>% group_by(step) %>% summarise(val=helper.iqr(diff_second)) %>% summarise(min_outlier=min(val))
+head(outliers)
+```
+
+Outliers should be deleted from the data frame.
+
+```{r}
+### Merge outliers with main df
+df.article  <- merge(x= df.article  , y= outliers, by.x = "step", by.y="step", all.x = TRUE)
+
+### Delete outliers
+df.article  <-  df.article  %>% mutate(is_outlier = ifelse(diff_second < min_outlier, FALSE, TRUE))
+
+## filter outlier values
+df.article  <- df.article  %>% filter(is_outlier==FALSE)
+
+```
+
+
+
+
+### Merge User Metadata
+
+We will merge our last data frame with run_3.enrolments data. By doing this, we will be able to interpret on users while performing exploratory analysis.
+
+```{r}
+df.article  <- merge(x=df.article , y=enrolments, by=c("learner_id"="learner_id", "run_id"="run_id"), all.x = TRUE)
+
+```
+
+### Check missing values
+
+```{r}
+unique(df.article[which(is.na(df.article$age_range) == TRUE), ]$learner_id)
+```
+
+
+```{r}
+missing_learner_id  <- unique(df.article[which(is.na(df.article$age_range) == TRUE), ]$learner_id)
+```
+
+
+### filter missing learner ids
+```{r}
+df.article <-  df.article  %>% filter(!learner_id %in% missing_learner_id)
+```
+

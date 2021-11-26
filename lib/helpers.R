@@ -9,3 +9,12 @@ helper.round_off<- function(number){
 }
 
 
+##  IQR function for outlier detection
+helper.iqr <- function(x) {
+  Q3<-quantile(x,0.75) # third quantile
+  Q1<-quantile(x,0.25) # first quantile
+  IQR<-(Q3-Q1)
+  left<- (Q1-(1.5*IQR))
+  right<- (Q3+(1.5*IQR))
+  c(x[x <left],x[x>right])
+}
