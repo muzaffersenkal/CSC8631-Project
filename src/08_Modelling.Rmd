@@ -1,0 +1,57 @@
+---
+title: "08_Modelling"
+output: pdf_document
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_knit$set(root.dir= normalizePath('..'))
+```
+
+
+# Modeling
+
+
+## Linear Regression Model
+
+#### Fit Model
+```{r}
+model_lm = lm(elapsed_time~., data = train) #Create the linear regression
+```
+
+
+#### Predict Validation Data
+```{r}
+pred_lm <- predict(model_lm, newdata=test)
+```
+
+#### RMSE Score
+
+
+```{r}
+RMSE(pred_lm, test$elapsed_time)
+```
+
+```{r}
+test_lm <- test
+test_lm$predicted <- pred_lm 
+```
+
+
+```{r}
+ggplot(test_lm, aes(x=seq(1:nrow(test_lm)), color="actual")) + 
+  geom_line(aes(y=elapsed_time, color="actual"))+
+  geom_line(aes(y=predicted, color="predicted")) + scale_colour_manual(values= c("actual"="green", "predicted"="red"))
+ggsave(file.path('graphs', 'linear_model_predict.png'))
+```
+
+### line plot between actual  and predicted
+```{r}
+ggplot(test_lm[1:100,], aes(x=seq(1:100), color="actual")) + 
+  geom_line(aes(y=elapsed_time, color="actual"))+
+  geom_line(aes(y=predicted, color="predicted")) + scale_colour_manual(values= c("actual"="green", "predicted"="red"))
+ggsave(file.path('graphs', 'linear_model_100_predict.png'))
+```
+
+
