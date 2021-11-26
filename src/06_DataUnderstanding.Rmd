@@ -1,0 +1,120 @@
+---
+title: "06_DataUnderstanding"
+output: pdf_document
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_knit$set(root.dir= normalizePath('..'))
+```
+
+
+#  Data Understanding
+
+## Exploratory Data Analysis
+
+
+## Plot Reading Time in Seconds For Each Article
+```{r}
+ggplot(data= df.article , aes(x = diff_second, group=step, color=step)) +
+  geom_boxplot(position = 'dodge')+
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))+
+  ggtitle("Plot Reading Time For Each Article")
+ggsave(file.path('graphs', 'reading_time_diff_second_by_step.png'))
+```
+
+As you can see, each article has a different range.
+
+###  Calculate Average Article Reading Time
+
+One of the business objectives was average article read time. It should be noted that **geometric mean** is used to reduce the effect of outlier values.
+The function was implemented in `lib/helpers.R` file.
+
+```{r}
+## Calculate geometric mean for every article
+df.article.mean <- df.article %>% group_by(step) %>% summarise(mean_diff_second = helper.geo_mean(diff_second))
+
+```
+
+
+
+
+###  Plot Average Article Reading Time
+
+```{r}
+ggplot(data= df.article.mean , aes(x = step, y=mean_diff_second)) +
+  geom_col(position = 'dodge')+
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))+
+  ggtitle("Average Article Reading Time")
+ggsave(file.path('graphs', 'article_average_reading_time.png'))
+```
+
+According to bar graph, the step with the highest average is **step 2.18**. The name of this step is *"Bitcoin: a cryptocurrency *. This topic can be considered interesting. Looking at the lowest averages are 1.18 and 3.20 which names are *"Recapping our exploration of privacy"* and *"Wrapping up"*. The common feature of these 2 steps is that it is a summary article. From this graph it can be interpreted that users are not very interested in summarizing articles.
+
+
+### Select an Article and Plot
+
+Since the length of the articles is not known, each article has its own distribution in terms of reading time. Therefore, making analysis on all data will create misleading results. 2 articles will be chosen at random and continue over them.
+
+
+
+```{r}
+df.article.filtered <- df.article %>% filter(step  %in% c("1.3","2.16"))
+```
+
+
+
+## BoxPlot Elapsep Time by age
+
+```{r}
+ggplot(data= df.article.filtered, aes(x = elapsed_time, group=age_range, color=age_range)) +
+  geom_boxplot(position = 'dodge')+
+  facet_wrap(~step+step_name , scales = "free", ncol = 2)+
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))+
+  ggtitle("Reading time of articles by age")
+ggsave(file.path('graphs', 'article_13_216_elapsed_time.png'))
+```
+
+According to the graph, it seems that there are too many outliers in people of unknown age.
+It seems that people over the age of 65 give importance to the subject of "Is your mobile phone spying on you" .
+
+
+### Age Distribution
+
+```{r}
+ggplot(data= df.article.filtered, aes(x = age_range, color=age_range)) +
+  geom_bar(alpha = 0.3)+
+  facet_wrap(~step+step_name , scales = "free", ncol = 2)+
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))+
+  ggtitle("Age Distribution")
+ggsave(file.path('graphs', 'article_13_216_elapsed_time_age_dist.png'))
+```
+As you can see in the bar graph, there is a lot of data of unknown age.
+
+
+
+## Plot Elapsed Reading Time by employment status
+```{r}
+ggplot(data= df.article.filtered, aes(x = elapsed_time, group=employment_status, color=employment_status)) +
+  geom_boxplot(position = 'dodge')+
+  facet_wrap(~step+step_name, scales = "free", ncol = 2)+
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))+
+  ggtitle("Elapsed Reading time of articles by employment status")
+ggsave(file.path('graphs', 'article_13_216_elapsed_time_employment_status.png'))
+```
+
+
+It seems that students give less importance to "Is your mobile phone spying on you" than other employment statuses. The median value of this is very low compared to others
+
+
+## Plot Elapsed Reading Time by Employment Area
+```{r}
+ggplot(data= df.article.filtered %>% filter(step=="1.3"), aes(x = elapsed_time, group=employment_area, color=employment_area)) +
+  geom_boxplot(position = 'dodge')+
+  facet_wrap(~step+step_name, scales = "free")+
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))+
+  ggtitle("Elapsed Reading Time of Articles by Employment Status")
+ggsave(file.path('graphs', 'article_13_216_elapsed_time_employment_area.png'))
+```
+As can be seen from the graphics, the time spent on the article varies according to the demographic information of the people and the subject of the article.

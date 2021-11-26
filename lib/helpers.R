@@ -18,3 +18,8 @@ helper.iqr <- function(x) {
   right<- (Q3+(1.5*IQR))
   c(x[x <left],x[x>right])
 }
+
+## geometric mean
+helper.geo_mean <- function(x){
+  return (exp(mean(log(x))))
+}
