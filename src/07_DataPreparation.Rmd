@@ -1,0 +1,65 @@
+---
+title: "07_DataPreparation"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_knit$set(root.dir= normalizePath('..'))
+```
+
+
+#  Data Preparation
+
+Random state ensures that the splits that you generate are reproducible.
+
+```{r}
+set.seed(123) # random state
+```
+
+
+## Feature Selection
+
+
+According to the features extracted from the analysis, a total of 7 independent variables will be used in the first model.
+
+```{r}
+df_model <- df.article %>% select(step,elapsed_time,gender,age_range, highest_education_level,employment_status, employment_area)
+```
+
+
+## Filter Unknown
+
+During Exploratory Data Analysis, it was determined that the data with the value "Unknown" had too many outliers. These values should be filtered.
+
+```{r}
+df_model <- df_model %>% filter(age_range != "Unknown") %>% filter(highest_education_level != "Unknown") %>% filter(employment_status != "Unknown") %>% filter(gender != "Unknown") %>% filter(employment_area  != "Unknown")
+```
+
+
+## Reset Factor Levels
+
+The type of data we filtered was factor. Therefore, you need to reset our factor level.
+
+```{r}
+df_model$step <- as.factor(as.character(df_model$step))
+df_model$gender <- as.factor(as.character(df_model$gender))
+df_model$age_range <- as.factor(as.character(df_model$age_range))
+df_model$highest_education_level <- as.factor(as.character(df_model$highest_education_level))
+df_model$employment_status <- as.factor(as.character(df_model$employment_status))
+df_model$employment_area <- as.factor(as.character(df_model$employment_area))
+```
+
+### Train-Test Split
+
+To measure the success of our model, we need to separate our data into training and testing.We will split data into 80 percent for training, 20 percent for validation.
+
+
+```{r}
+
+train.index <- createDataPartition(df_model$elapsed_time, p = .8, list = FALSE)
+train <- df_model[ train.index,]
+test  <- df_model[-train.index,]
+```
+
+
