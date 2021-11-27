@@ -1,0 +1,11 @@
+---
+title: "09_Evaluation"
+output: pdf_document
+---
+
+
+
+# Deployment
+
+This section aims to put the whole work into practice. It is not possible for the study to reach its business goal if all analyzes remain local environment. Therefore, the study needs to be integrated in the target systems. In our study, we will deploy our report to Google Firebase.
+
