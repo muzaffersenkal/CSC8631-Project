@@ -1,0 +1,19 @@
+name: Unit Test
+
+on:
+  pull_request:
+    branches: [ master ]
+    paths-ignore:
+      - '.github/workflows/**' # Changes in workflow files will not trigger this action
+
+jobs:
+  test:
+    # The type of runner that the job will run on
+    runs-on: macOS-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: r-lib/actions/setup-r@v1
+    - name: install project template package
+      run: Rscript -e 'install.packages(c("ProjectTemplate"))'
+    - name: run tests
+      run: Rscript -e 'library(ProjectTemplate); test.project()'
