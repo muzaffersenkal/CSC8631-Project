@@ -1,0 +1,9 @@
+---
+title: "09_Evaluation"
+output: pdf_document
+---
+
+
+# Evaluation
+
+It can be very useful for readers to know how much time they can expect to spend on an article before they engage. It is calculated based on the number of average adult reads words in one minute. Our approach  goal is to calculate it using data.Considering the findings of the project, the reading times vary according to the demographic information of the person,and also the variables that affect the reading time change for each article. 
