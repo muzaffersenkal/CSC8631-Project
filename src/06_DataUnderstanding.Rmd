@@ -50,12 +50,12 @@ ggplot(data= df.article.mean , aes(x = step, y=mean_diff_second)) +
 ggsave(file.path('graphs', 'article_average_reading_time.png'))
 ```
 
-According to bar graph, the step with the highest average is **step 2.18**. The name of this step is *"Bitcoin: a cryptocurrency *. This topic can be considered interesting. Looking at the lowest averages are 1.18 and 3.20 which names are *"Recapping our exploration of privacy"* and *"Wrapping up"*. The common feature of these 2 steps is that it is a summary article. From this graph it can be interpreted that users are not very interested in summarizing articles.
+According to the bar graph, the step with the highest average is **step 2.18**. The name of this step is *"Bitcoin: a cryptocurrency *. This topic can be considered interesting. Looking at the lowest averages are 1.18 and 3.20 which names are *"Recapping our exploration of privacy"* and *"Wrapping up"*. The common feature of these 2 steps is that it is a summary article. From this graph, it can be interpreted that users are not very interested in summarizing articles.
 
 
 ### Select an Article and Plot
 
-Since the length of the articles is not known, each article has its own distribution in terms of reading time. Therefore, making analysis on all data will create misleading results. 2 articles will be chosen at random and continue over them.
+Since the length of the articles is not known, each article has its own distribution in terms of reading time. Therefore, making an analysis on all data will create misleading results. 2 articles will be chosen at random and continued over them.
 
 
 

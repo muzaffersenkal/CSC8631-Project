@@ -36,11 +36,11 @@ FutureLearn is an online open course platform in various fields and subjects. Th
 
 # Business Understanding
 
-Businesses are making effort to achieve an edge with its content marketing program. Showing an article’s reading time to each of article can have a profound and positive effect on reader engagement levels. The first benefit is that users to help them choose the right article for the right amount of available time they have. Another advantage is that estimated reading time impacts engagement metrics seriously. Lastly, it helps to make analyzes according to certain groups.
+Businesses are making effort to achieve an edge with their content marketing program. Showing an article’s reading time to each article can have a profound and positive effect on reader engagement levels. The first benefit is that users to help them choose the right article for the right amount of available time they have. Another advantage is that estimated reading time impacts engagement metrics seriously. Lastly, it helps to make analyzes according to certain groups.
 
 Reading time is calculated based on the number of words read by the average human per minute. Generally, this average value per minute is between 200 and 250 words. Therefore, the total number of words in the article is divided by this determined average.
 
-However, scientific articles are not like blog posts. Reading time varies according to one's knowledge, age, country even article subject .For example, professionals can read articles more quickly than students or older people read slower. Hence,  we are not making an accurate estimate by using the conventional calculation method.
+However, scientific articles are not like blog posts. Reading time varies according to one's knowledge, age, country even article subject .For example, professionals can read articles more quickly than students or older people who read slower. Hence,  we are not making an accurate estimate by using the conventional calculation method.
 
 In this study, the data will be analyzed and the article reading time will be examined in which groups and how it changes. Then, a regression model using these features will be developed that can predict article reading time on a per-person basis.
 
@@ -56,9 +56,9 @@ The following sections will focus on:
 
 ##  Data Mining Goals
 
-The business objectives is defined, it's time to translate it into a data mining reality
+The business objectives are defined, it's time to translate it into a data mining reality
 
-- Explore and find features one of run data sets 
+- Explore and find features one of the run data sets 
 - Build predictive model with 2 min RMSE
 
 
@@ -119,27 +119,27 @@ Other data are as follows;
 
 ## Data Quality
 
-Before start the analysis part, we should check data quality. First of all, step column in step.activity is numeric. We should convert it to string column. Column transform operations were performed in the `munge/01-Transform-Datatype.R` file.
+Before starting the analysis part, we should check data quality. First of all, the step column in step.activity is numeric. We should convert it to a string column. Column transform operations were performed in the `munge/01-Transform-Datatype.R` file.
 
-Since the step column is numeric, the values 2.2 to 2.20 appear as 2.2. We should fix this first, then convert categorical column. This operation was implemented in `munge/02.Fix-StepID-StepActivity.R`
+Since the step column is numeric, the values 2.2 to 2.20 appear as 2.2. We should fix this first, then convert the categorical column. This operation was implemented in `munge/02.Fix-StepID-StepActivity.R`
 
-In enrollment data set, there are many missing values in age_range, country, employment_area. There are 2 columns for country information. One is the country name given by the user, and the other is the country name determined by the system.
+In the enrollment data set, there are many missing values in age_range, country, employment_area. There are 2 columns for country information. One is the country name given by the user, and the other is the country name determined by the system.
 
-Before proceeding to the exploratory analysis, some feature engineering steps were applied to provide a more comfortable visualization on the data.
+Before proceeding to the exploratory analysis, some feature engineering steps were applied to provide a more comfortable visualization of the data.
 
 New columns are added as following:
 
 -   **completed** (step_activity) : it is a boolean column that represents whether completed or not
 -   **is_unenroll** (enrolments) : it is a boolean column that represents whether undo the enrollment or not
 
-This operations implemented in `munge/03-FeatureEngineering.R`
+These operations implemented in `munge/03-FeatureEngineering.R`
 
 And also, to analyze for all step activity, all files should be merged. So we need to add a new column called **run_id** to all our data and merge the data. This operation was implemented in `munge/04-MergeDataFrames.R`
 
 
 
 
-## Data Exploratory Anaylsis
+## Data Exploratory Analysis
 
 ```{r echo=FALSE}
 include_graphics(paste0(getwd(),"/graphs/run_1_step_activity_count.png")) 
@@ -164,7 +164,7 @@ include_graphics(paste0(getwd(),"/graphs/all_step_activity.png"))
 
 When we look at the graphics for each run, we see that there is a similar pattern. However, In the last steps of Run 1, it seems that the rate of non-completion is higher than the others and the overall number of enrollment is also quite high.
 
-When looked carefully, there are 2 spaces in Run 3. Whereas, a gap was occured in our first chart only at **step 3.18**. And also these gaps were formed in the runes other than Run 1. It raises suspicion that there may be any missing step. Let's check it.
+When looked carefully, there are 2 spaces in Run 3. Whereas, a gap was occurred in our first chart only at **step 3.18**. And also these gaps were formed in the runes other than Run 1. It raises suspicion that there may be any missing step. Let's check it.
 
 ```{r}
 step_activity %>%
@@ -181,12 +181,12 @@ As we thought, there are missing and extra steps. Because of these different ste
 
 ##   External Data - Continents
 
-Country based visualizations can also be difficult to interpret as there are many country names. For this, continent data that mapped countries from outside was found and merged with enrollment data.
+Country-based visualizations can also be difficult to interpret as there are many country names. For this, continent data that mapped countries from outside was found and merged with enrollment data.
 
 
 
 ##  External Data - Step Activity Metadata 
-We will create a map list which includes names, types and step_id. 
+We will create a map list that includes names, types and step_id. 
 
 
 
@@ -205,10 +205,10 @@ df.filtered <-  merge(x= df.filtered, y = run_3.step.metadata, by.x = "step", by
 ##  Calculating Time Difference
 
 
-In order to achieve our business goal, we need to calculate the total elapsed time. We can find difference time between **first_visited_at** and **last_completed_at**.Since some records do not have a last time date, we will specify their value as 0. 
+In order to achieve our business goal, we need to calculate the total elapsed time. We can find difference time between **first_visited_at** and **last_completed_at**.Since some records do not have the last time date, we will specify their value as 0. 
 
 
-It was stated in one of the business objective that the reading date would be estimated. 
+It was stated in one of the business objectives that the reading date would be estimated. 
 It will be better in terms of user experience to estimate this estimate in half-minute intervals instead of seconds. We need to round the data in seconds to numbers such as 6.30 minutes, 7 minutes. The name of this newly created column will be called **elapsed_time**.
 
 These operations were implemented in `munge/03-FeatureEngineering.R`
@@ -234,7 +234,7 @@ As we know, **CRISP-DM** is not a linear process. To make sure it fits the busin
 There are html files attached with details about the course in data files. These html files contain the names and step types of all the steps. We can use them to find missing and extra steps. And also, we need step types(article, video, etc) in our analysis.
 
 
-##  Data Exploratory Anaylsis
+##  Data Exploratory Analysis
 
 ```{r echo=FALSE}
 include_graphics(paste0(getwd(),"/graphs/run3_step_activity_with_type.png")) 
@@ -242,7 +242,7 @@ include_graphics(paste0(getwd(),"/graphs/run3_step_activity_with_type.png"))
 
 
 
-This bar chart represents the number of participation of each step with their step type. 
+This bar chart represents the number of participants of each step with their step type. 
 
 
 ## Boxplot of Elapsed time for each step
@@ -265,7 +265,7 @@ include_graphics(paste0(getwd(),"/graphs/filtered_run_elapsed_time_boxplot.png")
 
 
 
-Some users may have left the site open during some steps and left the computer. So we may be seeing these outliers. It seems difficult to interpret the graphs because there are outliers, so we should clean these outliers. The interquartile range is common method used to find outliers in data. Basically, we can implement this method to clean our outliers.
+Some users may have left the site open during some steps and left the computer. So we may be seeing these outliers. It seems difficult to interpret the graphs because there are outliers, so we should clean these outliers. The interquartile range is a common method used to find outliers in data. Basically, we can implement this method to clean our outliers.
 
 On the other hand, in order to make a demographic interpretation, we need to combine our data with the enrolment data set.
 
@@ -275,7 +275,7 @@ On the other hand, in order to make a demographic interpretation, we need to com
 
 ## Filter Steps
 
-In the remaining analysis, analysis will be made on the articles. Therefore, it is necessary to filter the data and retrieve only the articles.
+In the remaining analysis, it will be made on the articles. Therefore, it is necessary to filter the data and retrieve only the articles.
 
 ```{r}
 df.article <- df.filtered  %>% filter(step_type == "ARTICLE")
@@ -285,7 +285,7 @@ unique(df.article$step)
 
 ###  Outlier Detection
 
-When the data is analyzed, we see that the outliers are quite large. It seems that they spend more than 10 hours with steps, but such a thing is not possible. To avoid this issue, it should be defined a threshold for these values then filtered it.
+When the data is analyzed, we see that the outliers are quite large. It seems that they spend more than 10 hours with steps, but such a thing is not possible. To avoid this issue, it should be defined a threshold for these values then filtered.
 
 ```{r}
 threshold <- 30 * 60 # 30 minute
@@ -294,7 +294,7 @@ df.article <- df.article %>% filter(diff_second < threshold)
 ```
 
 
-Only this way of filtering does not remove outliers from the data. An outlier detection method needs to be applied. IQR method will be used in this study. In ProjectTemplate structure, lib folder is good place to store external function. So, our outlier detection method which IQR was implemented in **lib/helpers.R** file. 
+Only this way of filtering does not remove outliers from the data. An outlier detection method needs to be applied. IQR method will be used in this study. In ProjectTemplate structure, lib folder is a good place to store external functions. So, our outlier detection method which IQR was implemented in **lib/helpers.R** file. 
 
 Importantly, instead of calculating an outlier over the entire data directly, we will calculate an outlier for each step.
 
@@ -322,7 +322,7 @@ df.article  <- df.article  %>% filter(is_outlier==FALSE)
 
 ### Merge User Metadata
 
-We will merge our last data frame with run_3.enrolments data. By doing this, we will be able to interpret on users while performing exploratory analysis.
+We will merge our last data frame with run_3.enrolments data. By doing this, we will be able to interpret users while performing exploratory analysis.
 
 ```{r}
 df.article  <- merge(x=df.article , y=enrolments, by=c("learner_id"="learner_id", "run_id"="run_id"), all.x = TRUE)
@@ -385,12 +385,12 @@ include_graphics(paste0(getwd(),"/graphs/article_average_reading_time.png"))
 
 
 
-According to bar graph, the step with the highest average is **step 2.18**. The name of this step is *"Bitcoin: a cryptocurrency *. This topic can be considered interesting. Looking at the lowest averages are 1.18 and 3.20 which names are *"Recapping our exploration of privacy"* and *"Wrapping up"*. The common feature of these 2 steps is that it is a summary article. From this graph it can be interpreted that users are not very interested in summarizing articles.
+According to the bar graph, the step with the highest average is **step 2.18**. The name of this step is *"Bitcoin: a cryptocurrency *. This topic can be considered interesting. Looking at the lowest averages are 1.18 and 3.20 which names are *"Recapping our exploration of privacy"* and *"Wrapping up"*. The common feature of these 2 steps is that it is a summary article. From this graph it can be interpreted that users are not very interested in summarizing articles.
 
 
 ### Select an Article and Plot
 
-Since the length of the articles is not known, each article has its own distribution in terms of reading time. Therefore, making analysis on all data will create misleading results. 2 articles will be chosen at random and continue over them.
+Since the length of the articles is not known, each article has its own distribution in terms of reading time. Therefore, making an analysis on all data will create misleading results. 2 articles will be chosen at random and continued over them.
 
 
 
@@ -451,7 +451,7 @@ As can be seen from the graphics, the time spent on the article varies according
 
 #  Data Preparation
 
-Random state ensures that the splits that you generate are reproducible.
+The random state ensures that the splits that you generate are reproducible.
 
 ```{r}
 set.seed(123) # random state
@@ -479,7 +479,7 @@ df_model <- df_model %>% filter(age_range != "Unknown") %>% filter(highest_educa
 
 ## Reset Factor Levels
 
-The type of data we filtered was factor. Therefore, you need to reset our factor level.
+The type of data we filtered was  a factor. Therefore, you need to reset our factor level.
 
 ```{r}
 df_model$step <- as.factor(as.character(df_model$step))
@@ -552,13 +552,13 @@ include_graphics(paste0(getwd(),"/graphs/linear_model_100_predict.png"))
 
 #  Evaluation
 
-It can be very useful for readers to know how much time they can expect to spend on an article before they engage. It is calculated based on the number of average adult reads words in one minute. Our approach  goal is to calculate it using data.Considering the findings of the project, the reading times vary according to the demographic information of the person,and also the variables that affect the reading time change for each article. 
+It can be very useful for readers to know how much time they can expect to spend on an article before they engage. It is calculated based on the number of average adults who read words in one minute. Our approach goal is to calculate it using data.Considering the findings of the project, the reading times vary according to the demographic information of the person,and also the variables that affect the reading time change for each article. 
 
 
 
 #  Deployment
 
-This section aims to put the whole work into practice. It is not possible for the study to reach its business goal if all analyzes remain local environment. Therefore, the study needs to be integrated in the target systems. In our study, we will deploy our report to Google Firebase.
+This section aims to put the whole work into practice. It is not possible for the study to reach its business goal if all analyzes remain local environment. Therefore, the study needs to be integrated into the target systems. In our study, we will deploy our report to Google Firebase.
 
 
 

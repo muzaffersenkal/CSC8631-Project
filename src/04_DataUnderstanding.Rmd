@@ -15,7 +15,7 @@ As we know, **CRISP-DM** is not a linear process. To make sure it fits the busin
 There are html files attached with details about the course in data files. These html files contain the names and step types of all the steps. We can use them to find missing and extra steps. And also, we need step types(article, video, etc) in our analysis.
 
 
-##  Data Exploratory Anaylsis
+##  Data Exploratory Analysis
 
 
 ```{r}
@@ -27,7 +27,7 @@ ggplot(df.filtered , aes(x = step, color=step_type)) +
 ggsave(file.path('graphs', 'run3_step_activity_with_type.png'))
 ```
 
-This bar chart represents the number of participation of each step with their step type. 
+This bar chart represents the number of participants of each step with their step type. 
 
 
 ## Boxplot of Elapsed time for each step
@@ -55,7 +55,7 @@ ggsave(file.path('graphs', 'filtered_run_elapsed_time_boxplot_by_type.png'))
 
 ```
 
-Some users may have left the site open during some steps and left the computer. So we may be seeing these outliers. It seems difficult to interpret the graphs because there are outliers, so we should clean these outliers. The interquartile range is common method used to find outliers in data. Basically, we can implement this method to clean our outliers.
+Some users may have left the site open during some steps and left the computer. So we may be seeing these outliers. It seems difficult to interpret the graphs because there are outliers, so we should clean these outliers. The interquartile range is a common method used to find outliers in data. Basically, we can implement this method to clean our outliers.
 
 On the other hand, in order to make a demographic interpretation, we need to combine our data with the enrolment data set.
 

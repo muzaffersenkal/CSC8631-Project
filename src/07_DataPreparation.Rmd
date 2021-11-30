@@ -11,7 +11,7 @@ knitr::opts_knit$set(root.dir= normalizePath('..'))
 
 #  Data Preparation
 
-Random state ensures that the splits that you generate are reproducible.
+The random state ensures that the splits that you generate are reproducible.
 
 ```{r}
 set.seed(123) # random state

@@ -10,12 +10,12 @@ output: pdf_document
 
 ##   External Data - Continents
 
-Country based visualizations can also be difficult to interpret as there are many country names. For this, continent data that mapped countries from outside was found and merged with enrollment data.
+Country-based visualizations can also be difficult to interpret as there are many country names. For this, continent data that mapped countries from outside was found and merged with enrollment data.
 
 
 
 ##  External Data - Step Activity Metadata 
-We will create a map list which includes names, types and step_id. 
+We will create a map list that includes names, types and step_id. 
 
 
 
@@ -34,10 +34,10 @@ df.filtered <-  merge(x= df.filtered, y = run_3.step.metadata, by.x = "step", by
 ##  Calculating Time Difference
 
 
-In order to achieve our business goal, we need to calculate the total elapsed time. We can find difference time between **first_visited_at** and **last_completed_at**.Since some records do not have a last time date, we will specify their value as 0. 
+In order to achieve our business goal, we need to calculate the total elapsed time. We can find difference time between **first_visited_at** and **last_completed_at**.Since some records do not have the last time date, we will specify their value as 0. 
 
 
-It was stated in one of the business objective that the reading date would be estimated. 
+It was stated in one of the business objectives that the reading date would be estimated. 
 It will be better in terms of user experience to estimate this estimate in half-minute intervals instead of seconds. We need to round the data in seconds to numbers such as 6.30 minutes, 7 minutes. The name of this newly created column will be called **elapsed_time**.
 
 These operations were implemented in `munge/03-FeatureEngineering.R`
