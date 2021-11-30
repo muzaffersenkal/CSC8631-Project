@@ -3,16 +3,20 @@ title: "Data Management and Exploratory Data Analysis - CSC8631 - Project"
 author: "Muzaffer Senkal - 210351491"
 date: "3/12/2021"
 output:
-  pdf_document: default
-  html_notebook: default
+  pdf_document:
+    number_sections: true
+    fig_caption: yes
   html_document:
-    df_print: paged
+    number_sections: true
 ---
 
 
 ```{r setup, include=FALSE}
+library(knitr)
 knitr::opts_chunk$set(echo = TRUE)
 knitr::opts_knit$set(root.dir= normalizePath('..'))
+knitr::opts_chunk$set(fig.pos = 'H')
+
 ```
 
 
@@ -30,7 +34,7 @@ FutureLearn is an online open course platform in various fields and subjects. Th
 
 #  Implementation of the CRISP-DM
 
-# 1. Business Understanding
+# Business Understanding
 
 Businesses are making effort to achieve an edge with its content marketing program. Showing an article’s reading time to each of article can have a profound and positive effect on reader engagement levels. The first benefit is that users to help them choose the right article for the right amount of available time they have. Another advantage is that estimated reading time impacts engagement metrics seriously. Lastly, it helps to make analyzes according to certain groups.
 
@@ -59,7 +63,7 @@ The business objectives is defined, it's time to translate it into a data mining
 
 
 
-# 2. Data Understanding
+#  Data Understanding
 
 We will gather, describe and explore the data to make sure it fits the business goal. There are 6 different course periods(runs) and the data is stored in different files and there are 53 in total. It can cause confusion and inefficiency during analysis. We must store and use them in a structured way in our analysis. For this, we transformed our files in a structured way using **regex**. The function is implemented in **libs/globals.R** file.
 
@@ -132,20 +136,31 @@ This operations implemented in `munge/03-FeatureEngineering.R`
 
 And also, to analyze for all step activity, all files should be merged. So we need to add a new column called **run_id** to all our data and merge the data. This operation was implemented in `munge/04-MergeDataFrames.R`
 
+
+
+
 ## Data Exploratory Anaylsis
 
+```{r echo=FALSE}
+include_graphics(paste0(getwd(),"/graphs/run_1_step_activity_count.png")) 
+```
 
-![run_1_step_activity_count.png](../graphs/run_1_step_activity_count.png)
+```{r echo=FALSE}
+include_graphics(paste0(getwd(),"/graphs/run_1_step_activity.png")) 
+```
 
-
-![run_1_step_activity.png](../graphs/run_1_step_activity.png)
-
-![run_3_step_activity.png](../graphs/run_3_step_activity.png)
+```{r echo=FALSE}
+include_graphics(paste0(getwd(),"/graphs/run_3_step_activity.png")) 
+```
 
 
 Firstly, it should be noted in the graph that the step steps are not sequential. The most striking part of the graph is that approximately 750 students did not complete **step 1.1**. The number of completing the step starts with 1500. After 10 steps, this number varies between 500 and 750 for the rest of the course. In addition, the number of participation in **step 3.18** is quite low.
 
-![all_step_activity.png](../graphs/all_step_activity.png)
+
+```{r echo=FALSE}
+include_graphics(paste0(getwd(),"/graphs/all_step_activity.png")) 
+```
+
 
 When we look at the graphics for each run, we see that there is a similar pattern. However, In the last steps of Run 1, it seems that the rate of non-completion is higher than the others and the overall number of enrollment is also quite high.
 
@@ -160,7 +175,7 @@ step_activity %>%
 As we thought, there are missing and extra steps. Because of these different steps, we can misinterpret our data.
 
 
-# 3. Data Preparation
+# Data Preparation
 
 ## Feature Engineering
 
@@ -212,7 +227,7 @@ df.filtered  <- df.filtered  %>% filter(diff_second != 0)
 
 
 
-# 4. Data Understanding
+# Data Understanding
 
 As we know, **CRISP-DM** is not a linear process. To make sure it fits the business and data mining goal, we can go back to data understanding.
 
@@ -221,8 +236,10 @@ There are html files attached with details about the course in data files. These
 
 ##  Data Exploratory Anaylsis
 
+```{r echo=FALSE}
+include_graphics(paste0(getwd(),"/graphs/run3_step_activity_with_type.png")) 
+```
 
-![run3_step_activity_with_type.png](../graphs/run3_step_activity_with_type.png)
 
 
 This bar chart represents the number of participation of each step with their step type. 
@@ -230,15 +247,22 @@ This bar chart represents the number of participation of each step with their st
 
 ## Boxplot of Elapsed time for each step
 
+```{r echo=FALSE}
+include_graphics(paste0(getwd(),"/graphs/filtered_run_elapsed_time_boxplot_by_step.png")) 
+```
 
-![filtered_run_elapsed_time_boxplot_by_step.png](../graphs/filtered_run_elapsed_time_boxplot_by_step.png)
+
 
 First of all, since there are too many steps, it is difficult to determine which step the points belong to. However, it is clear that there are many outliers in the data. It might be better to see them on the box plot.
 
 
 ### Boxplot of elapsed time for each type
 
-![filtered_run_elapsed_time_boxplot.png](../graphs/filtered_run_elapsed_time_boxplot.png)
+```{r echo=FALSE}
+include_graphics(paste0(getwd(),"/graphs/filtered_run_elapsed_time_boxplot.png")) 
+```
+
+
 
 
 Some users may have left the site open during some steps and left the computer. So we may be seeing these outliers. It seems difficult to interpret the graphs because there are outliers, so we should clean these outliers. The interquartile range is common method used to find outliers in data. Basically, we can implement this method to clean our outliers.
@@ -247,7 +271,7 @@ On the other hand, in order to make a demographic interpretation, we need to com
 
 
 
-# 5. Data Preparation
+# Data Preparation
 
 ## Filter Steps
 
@@ -324,15 +348,17 @@ df.article <-  df.article  %>% filter(!learner_id %in% missing_learner_id)
 
 
 
-# 6. Data Understanding
+#  Data Understanding
 
 ## Exploratory Data Analysis
 
 
 ## Plot Reading Time in Seconds For Each Article
 
+```{r echo=FALSE}
+include_graphics(paste0(getwd(),"/graphs/reading_time_diff_second_by_step.png")) 
+```
 
-![reading_time_diff_second_by_step.png](../graphs/reading_time_diff_second_by_step.png)
 
 
 As you can see, each article has a different range.
@@ -353,7 +379,10 @@ df.article.mean <- df.article %>% group_by(step) %>% summarise(mean_diff_second 
 
 ###  Plot Average Article Reading Time
 
-![article_average_reading_time.png](../graphs/article_average_reading_time.png)
+```{r echo=FALSE}
+include_graphics(paste0(getwd(),"/graphs/article_average_reading_time.png")) 
+```
+
 
 
 According to bar graph, the step with the highest average is **step 2.18**. The name of this step is *"Bitcoin: a cryptocurrency *. This topic can be considered interesting. Looking at the lowest averages are 1.18 and 3.20 which names are *"Recapping our exploration of privacy"* and *"Wrapping up"*. The common feature of these 2 steps is that it is a summary article. From this graph it can be interpreted that users are not very interested in summarizing articles.
@@ -373,7 +402,10 @@ df.article.filtered <- df.article %>% filter(step  %in% c("1.3","2.16"))
 
 ## BoxPlot Elapsep Time by age
 
-![article_13_216_elapsed_time.png](../graphs/article_13_216_elapsed_time.png)
+
+```{r echo=FALSE}
+include_graphics(paste0(getwd(),"/graphs/article_13_216_elapsed_time.png")) 
+```
 
 
 According to the graph, it seems that there are too many outliers in people of unknown age.
@@ -382,7 +414,11 @@ It seems that people over the age of 65 give importance to the subject of "Is yo
 
 ### Age Distribution
 
-![article_13_216_elapsed_time_age_dist.png](../graphs/article_13_216_elapsed_time_age_dist.png)
+```{r echo=FALSE }
+include_graphics(paste0(getwd(),"/graphs/article_13_216_elapsed_time_age_dist.png")) 
+```
+
+
 
 
 As you can see in the bar graph, there is a lot of data of unknown age.
@@ -391,8 +427,9 @@ As you can see in the bar graph, there is a lot of data of unknown age.
 
 ## Plot Elapsed Reading Time by employment status
 
-![article_13_216_elapsed_time_employment_status.png](../graphs/article_13_216_elapsed_time_employment_status.png)
-
+```{r echo=FALSE}
+include_graphics(paste0(getwd(),"/graphs/article_13_216_elapsed_time_employment_status.png")) 
+```
 
 
 
@@ -401,15 +438,18 @@ It seems that students give less importance to "Is your mobile phone spying on y
 
 ## Plot Elapsed Reading Time by Employment Area
 
+```{r echo=FALSE }
+include_graphics(paste0(getwd(),"/graphs/article_13_216_elapsed_time_employment_area.png")) 
+```
 
-![article_13_216_elapsed_time_employment_area.png](../graphs/article_13_216_elapsed_time_employment_area.png)
+
 
 
 As can be seen from the graphics, the time spent on the article varies according to the demographic information of the people and the subject of the article.
 
 
 
-# 7. Data Preparation
+#  Data Preparation
 
 Random state ensures that the splits that you generate are reproducible.
 
@@ -465,7 +505,7 @@ test  <- df_model[-train.index,]
 
 
 
-# 8. Modeling
+#  Modeling
 
 
 ## Linear Regression Model
@@ -493,23 +533,30 @@ test_lm <- test
 test_lm$predicted <- pred_lm 
 ```
 
-![linear_model_predict.png](../graphs/linear_model_predict.png)
+## All predictions - line plot between actual  and predicted
 
-## line plot between actual  and predicted
-![linear_model_100_predict.png](../graphs/linear_model_100_predict.png)
-
-
-
+```{r echo=FALSE}
+include_graphics(paste0(getwd(),"/graphs/linear_model_predict.png")) 
+```
 
 
 
-# 9. Evaluation
+## First 100 predictions - line plot between actual  and predicted
+
+```{r echo=FALSE}
+include_graphics(paste0(getwd(),"/graphs/linear_model_100_predict.png")) 
+```
+
+
+
+
+#  Evaluation
 
 It can be very useful for readers to know how much time they can expect to spend on an article before they engage. It is calculated based on the number of average adult reads words in one minute. Our approach  goal is to calculate it using data.Considering the findings of the project, the reading times vary according to the demographic information of the person,and also the variables that affect the reading time change for each article. 
 
 
 
-# 10. Deployment
+#  Deployment
 
 This section aims to put the whole work into practice. It is not possible for the study to reach its business goal if all analyzes remain local environment. Therefore, the study needs to be integrated in the target systems. In our study, we will deploy our report to Google Firebase.
 
