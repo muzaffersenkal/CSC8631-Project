@@ -38,7 +38,7 @@ ggplot(data= df.filtered , aes(x = elapsed_time, group=step, color=step)) +
   geom_boxplot(position = 'dodge')+
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) +
   ggtitle("Elapsed time for each step")
-ggsave(file.path('graphs', 'filtered_run_elapsed_time_boxplot.png'))
+ggsave(file.path('graphs', 'filtered_run_elapsed_time_boxplot_by_step.png'))
 
 ```
 First of all, since there are too many steps, it is difficult to determine which step the points belong to. However, it is clear that there are many outliers in the data. It might be better to see them on the box plot.
@@ -51,7 +51,7 @@ ggplot(data= df.filtered , aes(x = elapsed_time, group=step_type, color=step_typ
   geom_boxplot(position = 'dodge')+
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) +
   ggtitle("Boxplot of elapsed time for each type")
-ggsave(file.path('graphs', 'filtered_run_elapsed_time_boxplot.png'))
+ggsave(file.path('graphs', 'filtered_run_elapsed_time_boxplot_by_type.png'))
 
 ```
 
