@@ -12,7 +12,7 @@ In this study, the data will be analyzed and the article reading time will be ex
 
 -   Report file  => `reports/report.RMD` or `reports/report.pdf`.
 -   Critical reflection report file => `reports/short_report.RMD` or `reports/short_report.pdf`.
--   Presentation pdf =>  `docs/Presentation.pdf` or `docs/Presentation.pptx`.
+-   Presentation =>  `docs/Presentation.pdf` or `docs/Presentation.pptx`.
 -   Presentation video  =>  `docs/Presentation.mp4`.
 -   Git Log file => `logs/210351491_GitLogFile.txt`.
 
