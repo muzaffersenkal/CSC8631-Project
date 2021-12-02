@@ -11,7 +11,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 Businesses are making effort to achieve an edge with their content marketing program. Showing an article’s reading time to each article can have a profound and positive effect on reader engagement levels. The first benefit is that users to help them choose the right article for the right amount of available time they have. Another advantage is that estimated reading time impacts engagement metrics seriously. Lastly, it helps to make analyzes according to certain groups.
 
-Reading time is calculated based on the number of words read by the average human per minute. Generally, this average value per minute is between 200 and 250 words. Therefore, the total number of words in the article is divided by this determined average.
+Reading time is calculated based on the average number of words a person reads per minute. Generally, this average value per minute is between 200 and 250 words. Therefore, the total number of words in the article is divided by this determined average.
 
 However, scientific articles are not like blog posts. Reading time varies according to one's knowledge, age, country even article subject. For example, professionals can read articles more quickly than students or older people who read slower. Hence,  we are not making an accurate estimate by using the conventional calculation method.
 

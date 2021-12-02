@@ -38,7 +38,7 @@ FutureLearn is an online open course platform in various fields and subjects. Th
 
 Businesses are making effort to achieve an edge with their content marketing program. Showing an article’s reading time to each article can have a profound and positive effect on reader engagement levels. The first benefit is that users to help them choose the right article for the right amount of available time they have. Another advantage is that estimated reading time impacts engagement metrics seriously. Lastly, it helps to make analyzes according to certain groups.
 
-Reading time is calculated based on the number of words read by the average human per minute. Generally, this average value per minute is between 200 and 250 words. Therefore, the total number of words in the article is divided by this determined average.
+Reading time is calculated based on the average number of words a person reads per minute. Generally, this average value per minute is between 200 and 250 words. Therefore, the total number of words in the article is divided by this determined average.
 
 However, scientific articles are not like blog posts. Reading time varies according to one's knowledge, age, country even article subject .For example, professionals can read articles more quickly than students or older people who read slower. Hence,  we are not making an accurate estimate by using the conventional calculation method.
 
@@ -552,7 +552,7 @@ include_graphics(paste0(getwd(),"/graphs/linear_model_100_predict.png"))
 
 #  Evaluation
 
-It can be very useful for readers to know how much time they can expect to spend on an article before they engage. It is calculated based on the number of average adults who read words in one minute. Our approach goal is to calculate it using data.Considering the findings of the project, the reading times vary according to the demographic information of the person,and also the variables that affect the reading time change for each article. 
+It can be very useful for readers to know how much time they can expect to spend on an article before they engage. It is calculated based on the number of average adults who read words in one minute. Our approach goal is to calculate it using data. Considering the findings of the project, the reading times vary according to the demographic information of the person,and also the variables that affect the reading time change for each article. 
 
 
 
