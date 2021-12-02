@@ -14,7 +14,7 @@ knitr::opts_knit$set(root.dir= normalizePath('..'))
 
 ## Filter Steps
 
-In the remaining analysis, analysis will be made on the articles. Therefore, it is necessary to filter the data and retrieve only the articles.
+In the remaining analysis, it will be made on the articles. Therefore, it is necessary to filter the data and retrieve only the articles.
 
 ```{r}
 df.article <- df.filtered  %>% filter(step_type == "ARTICLE")
@@ -24,7 +24,7 @@ unique(df.article$step)
 
 ###  Outlier Detection
 
-When the data is analyzed, we see that the outliers are quite large. It seems that they spend more than 10 hours with steps, but such a thing is not possible. To avoid this issue, it should be defined a threshold for these values then filtered it.
+When the data is analyzed, we see that the outliers are quite large. It seems that they spend more than 10 hours with steps, but such a thing is not possible. To avoid this issue, it should be defined a threshold for these values then filtered.
 
 ```{r}
 threshold <- 30 * 60 # 30 minute
@@ -33,7 +33,7 @@ df.article <- df.article %>% filter(diff_second < threshold)
 ```
 
 
-Only this way of filtering does not remove outliers from the data. An outlier detection method needs to be applied. IQR method will be used in this study. In ProjectTemplate structure, lib folder is good place to store external function. So, our outlier detection method which IQR was implemented in **lib/helpers.R** file. 
+Only this way of filtering does not remove outliers from the data. An outlier detection method needs to be applied. IQR method will be used in this study. In ProjectTemplate structure, lib folder is a good place to store external functions. So, our outlier detection method which IQR was implemented in **lib/helpers.R** file. 
 
 Importantly, instead of calculating an outlier over the entire data directly, we will calculate an outlier for each step.
 
@@ -61,7 +61,7 @@ df.article  <- df.article  %>% filter(is_outlier==FALSE)
 
 ### Merge User Metadata
 
-We will merge our last data frame with run_3.enrolments data. By doing this, we will be able to interpret on users while performing exploratory analysis.
+We will merge our last data frame with run_3.enrolments data. By doing this, we will be able to interpret users while performing exploratory analysis.
 
 ```{r}
 df.article  <- merge(x=df.article , y=enrolments, by=c("learner_id"="learner_id", "run_id"="run_id"), all.x = TRUE)
