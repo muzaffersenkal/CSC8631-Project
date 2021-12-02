@@ -75,15 +75,15 @@ summary(run_3.step.activity)
 
 ## Data Quality
 
-Before start the analysis part, we should check data quality. First of all, step column in step.activity is numeric. We should convert it to string column. Column transform operations were performed in the `munge/01-Transform-Datatype.R` file.
+Before starting the analysis part, we should check data quality. First of all, the step column in step.activity is numeric. We should convert it to a string column. Column transform operations were performed in the `munge/01-Transform-Datatype.R` file.
 
-Since the step column is numeric, the values 2.2 to 2.20 appear as 2.2. We should fix this first, then convert categorical column. This operation was implemented in `munge/02.Fix-StepID-StepActivity.R`
-
-
-In enrollment data set, there are many missing values in age_range, country, employment_area. There are 2 columns for country information. One is the country name given by the user, and the other is the country name determined by the system.
+Since the step column is numeric, the values 2.2 to 2.20 appear as 2.2. We should fix this first, then convert the categorical column. This operation was implemented in `munge/02.Fix-StepID-StepActivity.R`
 
 
-Before proceeding to the exploratory analysis, some feature engineering steps were applied to provide a more comfortable visualization on the data.
+In the enrollment data set, there are many missing values in age_range, country, employment_area. There are 2 columns for country information. One is the country name given by the user, and the other is the country name determined by the system.
+
+
+Before proceeding to the exploratory analysis, some feature engineering steps were applied to provide a more comfortable visualization of the data.
 
 New columns are added as following:
 
@@ -91,13 +91,13 @@ New columns are added as following:
   - **is_unenroll** (enrolments) : it is a boolean column that represents whether undo the enrollment or not
 
 
-This operations implemented in `munge/03-FeatureEngineering.R`
+These operations implemented in `munge/03-FeatureEngineering.R`
 
 And also, to analyze for all step activity, all files should be merged. So we need to add a new column called **run_id** to all our data and merge the data.
 This operation  was implemented in `munge/04-MergeDataFrames.R`
 
 
-##  Data Exploratory Anaylsis
+##  Data Exploratory Analysis 
 
 
 ```{r}
@@ -133,7 +133,7 @@ ggsave(file.path('graphs', 'run_3_step_activity.png'))
 
 
 Firstly, it should be noted in the graph that the step steps are not sequential.
-The most striking part of the graph is that  approximately 750 students did not complete **step 1.1**. The number of completing the step starts with 1500. After 10 steps, this number varies between 500 and 750 for the rest of the course. In addition, the number of participation in **step 3.18** is quite low.
+The most striking part of the graph is that  approximately 750 students did not complete **step 1.1**. The number of completing the step starts with 1500. After 10 steps, this number varies between 500 and 750 for the rest of the course. In addition, the number of participants in **step 3.18** is quite low.
 
 
 
@@ -150,7 +150,7 @@ ggsave(file.path('graphs', 'all_step_activity.png'))
 When we look at the graphics for each run, we see that there is a similar pattern. However, In the last steps of Run 1, it seems that the rate of non-completion is higher than the others and the overall number of enrollment is also quite high.
 
 
-When looked carefully, there are 2 spaces in Run 3. Whereas, a gap  was occured in our first chart only at **step 3.18**. And also these gaps were formed in the runes other than Run 1. It raises suspicion that there may be any missing step. Let's check it.
+When looked carefully, there are 2 spaces in Run 3. Whereas, a gap  was occurred in our first chart only at **step 3.18**. And also these gaps were formed in the runes other than Run 1. It raises suspicion that there may be any missing step. Let's check it.
 
 
 ```{r}
